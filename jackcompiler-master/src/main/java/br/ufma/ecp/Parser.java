@@ -547,6 +547,17 @@ public class Parser {
 
         vmWriter.writeFunction(functionName, nlocals);
 
+        if (subroutineType == CONSTRUCTOR) {
+            vmWriter.writePush(Segment.CONST, symbolTable.varCount(Kind.FIELD));
+            vmWriter.writeCall("Memory.alloc", 1);
+            vmWriter.writePop(Segment.POINTER, 0);
+        }
+
+        if (subroutineType == METHOD) {
+            vmWriter.writePush(Segment.ARG, 0);
+            vmWriter.writePop(Segment.POINTER, 0);
+        }
+
         parseStatements();
         expectPeek(RBRACE);
         printNonTerminal("/subroutineBody");
