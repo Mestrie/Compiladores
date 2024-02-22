@@ -13,9 +13,9 @@ public class Parser {
     private static class ParseError extends RuntimeException {
     }
 
-    private SymbolTable symTable = new SymbolTable();
+    private SymbolTable symbolTable = new SymbolTable();
 
-    private SymbolTable symbolTable;
+    
 
     private Scanner scan;
     private Token currentToken;
@@ -279,13 +279,13 @@ public class Parser {
         expectPeek(IDENT);
         String name = currentToken.lexeme;
 
-        symTable.define(name, type, kind);
+        symbolTable.define(name, type, kind);
         while (peekTokenIs(COMMA)) {
             expectPeek(COMMA);
             expectPeek(IDENT);
 
             name = currentToken.lexeme;
-            symTable.define(name, type, kind);
+            symbolTable.define(name, type, kind);
         }
 
         expectPeek(SEMICOLON);
@@ -451,7 +451,7 @@ public class Parser {
 
             expectPeek(IDENT);
             String name = currentToken.lexeme;
-            symTable.define(name, type, kind);
+            symbolTable.define(name, type, kind);
 
             while (peekTokenIs(COMMA)) {
                 expectPeek(COMMA);
@@ -461,7 +461,7 @@ public class Parser {
                 expectPeek(IDENT);
                 name = currentToken.lexeme;
 
-                symTable.define(name, type, kind);
+                symbolTable.define(name, type, kind);
             }
 
         }
@@ -476,7 +476,7 @@ public class Parser {
         while (peekTokenIs(VAR)) {
             parseVarDec();
         }
-				var nlocals = symTable.varCount(Kind.VAR);
+				var nlocals = symbolTable.varCount(Kind.VAR);
 
         vmWriter.writeFunction(functionName, nlocals);
 
@@ -498,14 +498,14 @@ public class Parser {
 
         expectPeek(IDENT);
         String name = currentToken.lexeme;
-        symTable.define(name, type, kind);
+        symbolTable.define(name, type, kind);
 
         while (peekTokenIs(COMMA)) {
             expectPeek(COMMA);
             expectPeek(IDENT);
 
             name = currentToken.lexeme;
-            symTable.define(name, type, kind);
+            symbolTable.define(name, type, kind);
 
         }
 
